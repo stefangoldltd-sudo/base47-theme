@@ -1,6 +1,3 @@
-<?php
-if ( ! defined( 'ABSPATH' ) ) exit;
-wp_footer();
-?>
+<?php wp_footer(); ?>
 </body>
 </html>
