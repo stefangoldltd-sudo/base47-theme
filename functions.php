@@ -1,44 +1,23 @@
 <?php
-/**
- * Base47 Theme functions
- */
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+// Enable basic features
+add_theme_support( 'title-tag' );
+add_theme_support( 'post-thumbnails' );
+
+// Remove WordPress bloat (since Base47 is a shell)
+remove_action( 'wp_head', 'wp_generator' );
+remove_action( 'wp_head', 'rsd_link' );
+remove_action( 'wp_head', 'wlwmanifest_link' );
+remove_action( 'wp_head', 'wp_shortlink_wp_head' );
+remove_action( 'wp_head', 'rest_output_link_wp_head' );
+remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
+
+// Keep admin bar working
+add_theme_support( 'admin-bar', array( 'callback' => '__return_true' ) );
+
+// No CSS from theme – we want clean output
+function base47_disable_theme_css() {
+    wp_dequeue_style( 'base47-style' );
 }
-
-/**
- * Setup theme supports & menus.
- */
-function base47_theme_setup() {
-
-    // Let WordPress handle <title> tag.
-    add_theme_support( 'title-tag' );
-
-    // Enable featured images (if you ever use posts).
-    add_theme_support( 'post-thumbnails' );
-
-    // Basic menu location.
-    register_nav_menus(
-        array(
-            'primary' => __( 'Primary Menu', 'base47-theme' ),
-        )
-    );
-}
-add_action( 'after_setup_theme', 'base47_theme_setup' );
-
-/**
- * Enqueue styles & scripts.
- * Keep it ultra-light so it doesn’t fight Mivon template CSS.
- */
-function base47_theme_scripts() {
-
-    // Theme main stylesheet.
-    wp_enqueue_style(
-        'base47-style',
-        get_stylesheet_uri(),
-        array(),
-        wp_get_theme()->get( 'Version' )
-    );
-}
-add_action( 'wp_enqueue_scripts', 'base47_theme_scripts' );
+add_action( 'wp_enqueue_scripts', 'base47_disable_theme_css', 100 );
