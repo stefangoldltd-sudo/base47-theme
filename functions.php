@@ -66,3 +66,42 @@ remove_filter('the_excerpt', 'wpautop');
 --------------------------------------------- */
 
 add_filter('wp_calculate_image_srcset', '__return_false');
+
+// -------------------------------
+// Base47 GitHub Theme Updater
+// -------------------------------
+function base47_github_updater( $transient ) {
+
+    if ( empty( $transient->checked ) ) {
+        return $transient;
+    }
+
+    $theme = wp_get_theme( 'base47' );
+    $current_version = $theme->get( 'Version' );
+
+    $response = wp_remote_get( 'https://api.github.com/repos/stefangoldltd-sudo/base47-theme/releases/latest' );
+    
+    if ( is_wp_error( $response ) ) {
+        return $transient;
+    }
+
+    $data = json_decode( wp_remote_retrieve_body( $response ) );
+
+    if ( isset( $data->tag_name ) ) {
+
+        $latest_version = ltrim( $data->tag_name, 'v' );
+
+        if ( version_compare( $current_version, $latest_version, '<' ) ) {
+
+            $transient->response['base47'] = array(
+                'theme'       => 'base47',
+                'new_version' => $latest_version,
+                'package'     => $data->zipball_url,
+                'url'         => 'https://github.com/stefangoldltd-sudo/base47-theme',
+            );
+        }
+    }
+
+    return $transient;
+}
+add_filter( 'pre_set_site_transient_update_themes', 'base47_github_updater' );
