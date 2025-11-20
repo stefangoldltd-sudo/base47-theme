@@ -21,7 +21,7 @@ add_action('wp_enqueue_scripts', function () {
 
 
 /* ---------------------------------------------
-   Load our minimal CSS resets + helpers
+   Load our minimal CSS resets + helpers + main style
 --------------------------------------------- */
 
 add_action('wp_enqueue_scripts', function () {
@@ -34,12 +34,20 @@ add_action('wp_enqueue_scripts', function () {
         '8.0'
     );
 
-    // Base47 core helpers (will create file next)
+    // Base47 core helpers
     wp_enqueue_style(
         'base47-core',
         get_template_directory_uri() . '/assets/css/base47-core.css',
         [],
         '1.0'
+    );
+
+    // MAIN THEME STYLESHEET (style.css)
+    wp_enqueue_style(
+        'base47-style',
+        get_stylesheet_uri(),
+        ['base47-normalize'],
+        '1.2.3'   // <== must match style.css version!
     );
 });
 
