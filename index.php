@@ -1,25 +1,20 @@
 <?php
 /**
- * Main template file for Base47 Theme
+ * Base47 – Ultra Minimal Shell Theme
  */
+
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 get_header();
 ?>
 
-<?php
-if ( have_posts() ) :
-    while ( have_posts() ) :
-        the_post();
+<main id="base47-main">
+    <?php
+        // Output page/post content rendered by plugins (Mivon HTML Editor)
+        while ( have_posts() ) : the_post();
+            the_content();
+        endwhile;
+    ?>
+</main>
 
-        // For your Mivon-based pages, the HTML will usually come from a shortcode
-        // inside the page content. We just output the_content() and stay out of the way.
-        the_content();
-
-    endwhile;
-else :
-    echo '<p>' . esc_html__( 'No content found.', 'base47-theme' ) . '</p>';
-endif;
-?>
-
-<?php
-get_footer();
+<?php get_footer(); ?>
