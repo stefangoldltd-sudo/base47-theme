@@ -3,7 +3,7 @@
 /* ---------------------------------------------
    Base47 Theme – Minimal + Useful
    Optimized for raw HTML templates and Mivon HTML Editor
-   Version 2.0.0 - Canvas Mode (Like Elementor Canvas)
+   Version 2.0.1 - Canvas Mode (Like Elementor Canvas)
 --------------------------------------------- */
 
 // Disable Gutenberg everywhere (we are raw HTML people)
@@ -36,7 +36,7 @@ add_action('wp_enqueue_scripts', function () {
         'base47-style',
         get_stylesheet_uri(),
         [],
-        '2.0.0'
+        '2.0.1'
     );
 });
 
