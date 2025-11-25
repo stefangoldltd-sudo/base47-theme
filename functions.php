@@ -50,7 +50,7 @@ add_action('wp_enqueue_scripts', function () {
         'base47-style',
         get_stylesheet_uri(),
         [],
-        '1.5.2'
+        '1.5.3'
     );
 });
 
