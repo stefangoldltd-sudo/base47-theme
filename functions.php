@@ -3,7 +3,7 @@
 /* ---------------------------------------------
    Base47 Theme – Minimal + Useful
    Optimized for raw HTML templates and Mivon HTML Editor
-   Version 1.6.0 - Mobile Layout Fix
+   Version 2.0.0 - Canvas Mode (Like Elementor Canvas)
 --------------------------------------------- */
 
 // Disable Gutenberg everywhere (we are raw HTML people)
@@ -36,7 +36,7 @@ add_action('wp_enqueue_scripts', function () {
         'base47-style',
         get_stylesheet_uri(),
         [],
-        '1.6.0'
+        '2.0.0'
     );
 });
 
@@ -47,6 +47,55 @@ add_action('wp_enqueue_scripts', function () {
 
 add_theme_support( 'title-tag' );
 add_theme_support( 'post-thumbnails' );
+
+
+/* ---------------------------------------------
+   Add "Canvas Mode" meta box to pages
+   Let users manually enable canvas mode per page
+--------------------------------------------- */
+
+add_action('add_meta_boxes', function() {
+    add_meta_box(
+        'base47_canvas_mode',
+        'Base47 Canvas Mode',
+        'base47_canvas_mode_callback',
+        'page',
+        'side',
+        'high'
+    );
+});
+
+function base47_canvas_mode_callback($post) {
+    wp_nonce_field('base47_canvas_mode_nonce', 'base47_canvas_mode_nonce');
+    $value = get_post_meta($post->ID, '_base47_canvas_mode', true);
+    ?>
+    <label>
+        <input type="checkbox" name="base47_canvas_mode" value="1" <?php checked($value, '1'); ?>>
+        Enable Canvas Mode (No WordPress wrappers)
+    </label>
+    <p style="font-size: 11px; color: #666;">
+        Like Elementor Canvas - outputs pure HTML without WordPress theme wrappers.
+        Perfect for Mivon HTML Editor templates.
+    </p>
+    <?php
+}
+
+add_action('save_post', function($post_id) {
+    if (!isset($_POST['base47_canvas_mode_nonce']) || 
+        !wp_verify_nonce($_POST['base47_canvas_mode_nonce'], 'base47_canvas_mode_nonce')) {
+        return;
+    }
+    
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    
+    if (isset($_POST['base47_canvas_mode'])) {
+        update_post_meta($post_id, '_base47_canvas_mode', '1');
+    } else {
+        delete_post_meta($post_id, '_base47_canvas_mode');
+    }
+});
 
 
 /* ---------------------------------------------
@@ -79,6 +128,40 @@ add_filter('body_class', function($classes) {
     
     return array_diff($classes, $remove_classes);
 });
+
+
+/* ---------------------------------------------
+   CANVAS MODE: Auto-detect Mivon pages and use canvas template
+   Like Elementor Canvas - NO WordPress wrappers
+--------------------------------------------- */
+
+add_filter('template_include', function($template) {
+    
+    // Check if this is a page
+    if (is_page() || is_singular()) {
+        global $post;
+        
+        // Check if canvas mode is manually enabled
+        $canvas_enabled = get_post_meta($post->ID, '_base47_canvas_mode', true);
+        
+        // OR auto-detect Mivon content
+        $has_mivon_content = $post && (
+            strpos($post->post_content, 'mivon-') !== false ||
+            strpos($post->post_content, 'class="header') !== false ||
+            strpos($post->post_content, 'data-scroll-container') !== false
+        );
+        
+        // Use canvas template if enabled or Mivon detected
+        if ($canvas_enabled || $has_mivon_content) {
+            $canvas_template = get_template_directory() . '/template-canvas.php';
+            if (file_exists($canvas_template)) {
+                return $canvas_template;
+            }
+        }
+    }
+    
+    return $template;
+}, 99);
 
 
 // -------------------------------

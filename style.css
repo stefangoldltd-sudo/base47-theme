@@ -4,7 +4,7 @@ Theme URI: https://47-studio.com
 Author: Stefan Gold
 Author URI: https://47-studio.com
 Description: Minimal shell theme for Mivon HTML templates.
-Version: 1.6.0
+Version: 2.0.0
 Text Domain: base47-theme
 Update URI: https://api.github.com/repos/stefangoldltd-sudo/base47-theme
 */
@@ -58,7 +58,12 @@ a {
 .site,
 .site-main,
 .entry-content,
-.wp-site-blocks {
+.wp-site-blocks,
+main,
+#base47-main,
+article,
+.post,
+.page {
     margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
@@ -92,6 +97,22 @@ a {
 
 /* Nothing here — templates must be untouched */
 
+/* ------------------------------------
+   4.5 CANVAS MODE (Like Elementor Canvas)
+   Pure HTML - Zero WordPress interference
+------------------------------------ */
+
+body.base47-canvas {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+body.base47-canvas * {
+    /* Let Mivon templates control everything */
+    box-sizing: border-box;
+}
+
 /* ----
 --------------------------------
    5. MOBILE-SPECIFIC FIXES (v1.6.0)
@@ -121,5 +142,23 @@ a {
     body.home {
         padding: 0 !important;
         margin: 0 !important;
+    }
+    
+    /* FIX: First section always broken - kill ALL wrappers */
+    body > *:not(script):not(style),
+    #page,
+    main,
+    article,
+    .entry-content > *:first-child,
+    section:first-of-type,
+    .header,
+    header {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    /* Ensure first Mivon section displays correctly */
+    body {
+        overflow-x: hidden !important;
     }
 }
