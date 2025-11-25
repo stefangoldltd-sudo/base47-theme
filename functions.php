@@ -26,28 +26,31 @@ add_action('wp_enqueue_scripts', function () {
 
 add_action('wp_enqueue_scripts', function () {
 
-    // Normalize.css (reset)
+    // OPTIONAL: if you want normalize, leave this.
+    // If you want 100% identical to live editor, comment it out.
+    /*
     wp_enqueue_style(
         'base47-normalize',
         get_template_directory_uri() . '/assets/css/normalize.css',
         [],
         '8.0'
     );
+    */
 
-    // Base47 core helpers
-    wp_enqueue_style(
-        'base47-core',
-        get_template_directory_uri() . '/assets/css/base47-core.css',
-        [],
-        '1.0'
-    );
+    // DO NOT LOAD base47-core anymore – it’s the one that changes layout.
+    // wp_enqueue_style(
+    //     'base47-core',
+    //     get_template_directory_uri() . '/assets/css/base47-core.css',
+    //     [],
+    //     '1.0'
+    // );
 
-    // MAIN THEME STYLESHEET (style.css)
+    // MAIN THEME STYLESHEET – keep it ultra-minimal
     wp_enqueue_style(
         'base47-style',
         get_stylesheet_uri(),
-        ['base47-normalize'],
-        'v1.5.1'   // <== must match style.css version!
+        [],
+        '1.5.2'
     );
 });
 

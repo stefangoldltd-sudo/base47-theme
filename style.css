@@ -3,133 +3,189 @@ Theme Name: Base47 Theme
 Theme URI: https://47-studio.com
 Author: Stefan Gold
 Author URI: https://47-studio.com
-Description: Custom lightweight theme for Base47 ecosystem.
-Version: 1.5.1
+Description: Minimal shell theme for Mivon HTML templates.
+Version: 1.5.2
 Text Domain: base47-theme
-
 Update URI: https://api.github.com/repos/stefangoldltd-sudo/base47-theme
 */
 
-/* Reset & base layout */
+/* ------------------------------------
+   1. BASE RESET (safe + minimal)
+------------------------------------ */
+
 html, body {
     margin: 0;
     padding: 0;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 body {
-    min-height: 100vh;
+    -webkit-text-size-adjust: 100%; /* stop iPhone auto-zoom */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #000;
 }
 
-/* WordPress wrapper elements – keep them neutral */
-.site {
-    min-height: 100vh;
+/* Allow templates to manage spacing */
+.entry-content {
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-.site-main {
-    min-height: 100vh;
-}
-
-/* Media: don't break layouts on mobile */
-img,
-video {
+/* Media should behave but not change layout */
+img, video, picture, canvas {
     max-width: 100%;
     height: auto;
     display: block;
 }
 
-/* Make links behave nicely but don't enforce a color */
+/* Optional basic anchor behavior */
 a {
-    text-decoration: none;
     color: inherit;
+    text-decoration: none;
 }
 
-/* Skip link (accessibility) */
+/* Accessibility skip link */
 .skip-link {
     position: absolute;
-    left: -10000px;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
+    left: -9999px;
 }
 
-.skip-link:focus {
-    position: static;
-    width: auto;
-    height: auto;
+/* ------------------------------------
+   2. STOP WORDPRESS / THEMES 
+      from adding layout interference
+------------------------------------ */
+
+#page,
+.site,
+.site-main,
+.entry-content,
+.wp-site-blocks {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
 }
 
-/* Admin bar offset so our header (if used) doesn't hide under WP admin bar */
-.admin-bar .site-header {
-    padding-top: 32px;
+/* Remove all browser-added whitespace */
+* {
+    box-sizing: border-box;
 }
 
-/* Optional minimal nav styling (only used if you assign a WP menu) */
-.main-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
+/* ------------------------------------
+   3. FULL MOBILE SAFARI HEIGHT FIX
+------------------------------------ */
+
+:root {
+    --vh: 1vh;
+}
+
+@media (max-width: 768px) {
+    /* This allows templates to use calc(var(--vh)*100) */
+    html, body {
+        height: auto !important;
+    }
+}
+
+/* ------------------------------------
+   4. DO NOT TOUCH SECTION / CONTAINER 
+      PADDING OR TYPOGRAPHY ON MOBILE
+------------------------------------ */
+
+/* NOTHING HERE  
+   (because Mivon templates must stay 100% untouched)
+*//*
+Theme Name: Base47 Theme
+Theme URI: https://47-studio.com
+Author: Stefan Gold
+Author URI: https://47-studio.com
+Description: Minimal shell theme for Mivon HTML templates.
+Version: 1.5.2
+Text Domain: base47-theme
+Update URI: https://api.github.com/repos/stefangoldltd-sudo/base47-theme
+*/
+
+/* ------------------------------------
+   1. BASE RESET (safe + minimal)
+------------------------------------ */
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    -webkit-text-size-adjust: 100%; /* stop iPhone auto-zoom */
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     background: #000;
-    color: #fff;
-    padding: 10px 20px;
 }
 
-.main-nav .brand {
-    font-weight: 600;
-    font-size: 16px;
-}
-
-.main-nav .main-menu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    gap: 16px;
-}
-
-.main-nav .main-menu a {
-    text-decoration: none;
-    color: inherit;
-}
-
-/* Ensure WordPress blocks do not add unwanted spacing around our HTML templates */
+/* Allow templates to manage spacing */
 .entry-content {
-    margin: 0;
-    padding: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
+/* Media should behave but not change layout */
+img, video, picture, canvas {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
 
-/* ===========================
-   Mobile Overrides (Base47)
-   Global tweaks for all Mivon pages
-=========================== */
-@media only screen and (max-width: 768px) {
+/* Optional basic anchor behavior */
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
-    /* push content a bit down so the sticky nav/logo
-       doesn’t sit on top of the first section */
-    body {
-        padding-top: 80px !important;
-    }
+/* Accessibility skip link */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+}
 
-    /* make huge hero titles a bit smaller on small screens */
-    h1,
-    .sec-head h1,
-    .big-title {
-        font-size: 32px !important;
-        line-height: 1.2 !important;
-    }
+/* ------------------------------------
+   2. STOP WORDPRESS / THEMES 
+      from adding layout interference
+------------------------------------ */
 
-    /* softer side padding for all sections/containers */
-    section,
-    .container,
-    .content {
-        padding-left: 20px !important;
-        padding-right: 20px !important;
+#page,
+.site,
+.site-main,
+.entry-content,
+.wp-site-blocks {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Remove all browser-added whitespace */
+* {
+    box-sizing: border-box;
+}
+
+/* ------------------------------------
+   3. FULL MOBILE SAFARI HEIGHT FIX
+------------------------------------ */
+
+:root {
+    --vh: 1vh;
+}
+
+@media (max-width: 768px) {
+    /* This allows templates to use calc(var(--vh)*100) */
+    html, body {
+        height: auto !important;
     }
 }
+
+/* ------------------------------------
+   4. DO NOT TOUCH SECTION / CONTAINER 
+      PADDING OR TYPOGRAPHY ON MOBILE
+------------------------------------ */
+
+/* NOTHING HERE  
+   (because Mivon templates must stay 100% untouched)
+*/
