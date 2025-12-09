@@ -1,10 +1,10 @@
 <?php
 /**
  * Template Name: Base47 Canvas (No WordPress Wrappers)
- * Description: Pure HTML output - like Elementor Canvas mode
+ * Description: Pure HTML output
  * 
  * This template completely bypasses WordPress wrappers
- * Perfect for Mivon HTML Editor templates
+ * Perfect for base47 HTML Editor templates
  */
 ?>
 <!DOCTYPE html>

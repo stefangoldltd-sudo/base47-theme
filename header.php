@@ -1,22 +1,57 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
-    <meta charset="<?php bloginfo('charset'); ?>">
-    
-    <!-- Enhanced viewport for mobile - iOS Safari fix -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-
-    <!-- Prevent WordPress from adding weird formatting -->
+    <meta charset="<?php bloginfo( 'charset' ); ?>">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <!-- iOS-specific optimizations -->
+
+    <!-- iOS optimizations -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    
-    <!-- Prevent format detection interference -->
     <meta name="format-detection" content="telephone=no">
 
-    <!-- Minimal theme CSS reset (loaded in functions.php) -->
     <?php wp_head(); ?>
 </head>
+
 <body <?php body_class(); ?>>
+
+<a class="skip-link" href="#base47-main">
+    <?php esc_html_e( 'Skip to content', 'base47-theme' ); ?>
+</a>
+
+<div id="page" class="base47-site">
+
+    <?php if ( ! is_page_template( 'template-canvas.php' ) ) : ?>
+
+        <header class="b47-header">
+            <div class="b47-container b47-header-inner">
+
+                <div class="b47-logo">
+                    <a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+                        <?php bloginfo( 'name' ); ?>
+                    </a>
+                </div>
+
+                <nav class="b47-nav" aria-label="<?php esc_attr_e( 'Main navigation', 'base47-theme' ); ?>">
+                    <?php
+                    wp_nav_menu( array(
+                        'theme_location' => 'primary',
+                        'container'      => false,
+                        'fallback_cb'    => '__return_false',
+                        'menu_class'     => 'b47-nav-list',
+                    ) );
+                    ?>
+                </nav>
+
+            </div>
+        </header>
+
+    <?php endif; ?>
+
+    <main id="base47-main" class="b47-main">
