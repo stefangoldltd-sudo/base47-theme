@@ -9,6 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
+// Load debug tool (optional)
+$debug_file = get_template_directory() . '/debug-canvas.php';
+if ( file_exists( $debug_file ) ) {
+    require_once $debug_file;
+}
+
 /**
  * Helper: get current theme version for cache-busting.
  */
@@ -19,7 +25,7 @@ function base47_theme_get_version() {
         $theme = $theme->parent();
     }
     $version = $theme->get( 'Version' );
-    return $version ? $version : '2.1.1';
+    return $version ? $version : '2.1.0';
 }
 
 /* ---------------------------------------------
@@ -272,14 +278,26 @@ add_filter( 'template_include', function( $template ) {
         // Auto-detect Mivon / Base47 HTML templates in content
         $content = $post->post_content;
         $has_mivon_content = (
-            strpos( $content, 'mivon-' ) !== false ||
+            strpos( $content, '[mivon-' ) !== false ||
+            strpos( $content, '[base47-' ) !== false ||
             strpos( $content, 'class="header' ) !== false ||
             strpos( $content, 'data-scroll-container' ) !== false
         );
 
+        // Debug logging (remove after testing)
+        if ( defined('WP_DEBUG') && WP_DEBUG ) {
+            error_log('Base47 Canvas Detection - Post ID: ' . $post->ID);
+            error_log('Canvas Enabled (meta): ' . ($canvas_enabled ? 'YES' : 'NO'));
+            error_log('Has Mivon Content: ' . ($has_mivon_content ? 'YES' : 'NO'));
+            error_log('Content preview: ' . substr($content, 0, 200));
+        }
+
         if ( $canvas_enabled || $has_mivon_content ) {
             $canvas_template = get_template_directory() . '/template-canvas.php';
             if ( file_exists( $canvas_template ) ) {
+                if ( defined('WP_DEBUG') && WP_DEBUG ) {
+                    error_log('✅ Using canvas template for post ' . $post->ID);
+                }
                 return $canvas_template;
             }
         }
@@ -334,6 +352,37 @@ function base47_github_updater( $transient ) {
     return $transient;
 }
 add_filter( 'pre_set_site_transient_update_themes', 'base47_github_updater' );
+
+/* ---------------------------------------------
+ * Fix GitHub folder name issue
+ * Forces WordPress to use 'base47-theme' as folder name
+ * ------------------------------------------ */
+add_filter( 'upgrader_source_selection', 'base47_fix_github_folder_name', 10, 4 );
+function base47_fix_github_folder_name( $source, $remote_source, $upgrader, $extra ) {
+    // Only run for theme updates
+    if ( ! isset( $extra['theme'] ) ) {
+        return $source;
+    }
+    
+    // Only run for base47-theme
+    if ( $extra['theme'] !== 'base47-theme' && strpos( $source, 'base47-theme' ) === false ) {
+        return $source;
+    }
+    
+    // Get the parent directory
+    $parent_dir = dirname( $source );
+    
+    // New folder name
+    $new_source = trailingslashit( $parent_dir ) . 'base47-theme';
+    
+    // Rename the folder
+    if ( $source !== $new_source ) {
+        @rename( $source, $new_source );
+        return $new_source;
+    }
+    
+    return $source;
+}
 
 /* ---------------------------------------------
  * (Optional) Load extra hooks file if you create inc/hooks.php later.

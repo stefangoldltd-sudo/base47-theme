@@ -4,7 +4,7 @@ Theme URI: https://47-studio.com
 Author: Stefan Gold
 Author URI: https://47-studio.com
 Description: Minimal shell theme for Mivon HTML templates.
-Version: 2.1.0
+Version: 2.1.2
 Text Domain: base47-theme
 Update URI: https://api.github.com/repos/stefangoldltd-sudo/base47-theme
 */
@@ -99,11 +99,46 @@ article,
 body.base47-canvas {
     margin: 0 !important;
     padding: 0 !important;
+    overflow-x: hidden;
 }
 
 body.base47-canvas * {
     /* Let Mivon templates control everything */
     box-sizing: border-box;
+}
+
+/* Remove admin bar in canvas mode */
+body.base47-canvas #wpadminbar,
+body.base47-canvas.admin-bar #wpadminbar {
+    display: none !important;
+}
+
+/* Remove admin bar spacing */
+body.base47-canvas.admin-bar {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Ensure canvas content starts at top */
+body.base47-canvas #page,
+body.base47-canvas .base47-site {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Remove spacing from main content area when Base47 templates are used */
+body.base47-canvas .b47-main,
+body.base47-canvas main {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove container padding for full-width Base47 templates */
+body.base47-canvas .b47-container,
+body.base47-canvas .b47-page-inner {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
 }
 
 /* ----
