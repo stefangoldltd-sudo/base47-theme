@@ -1,6 +1,9 @@
 <?php
 /**
- * Template Name: Base47 Canvas (Raw HTML Mode)
+ * Template Name: Full Screen (No Header/Footer)
+ * 
+ * Full screen template without theme header/footer.
+ * Perfect for landing pages and custom layouts.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -15,12 +18,12 @@ if ( ! defined( 'ABSPATH' ) ) {
     <?php wp_head(); ?>
 </head>
 
-<body class="base47-canvas">
+<body <?php body_class('base47-fullscreen'); ?>>
 
 <?php
 while ( have_posts() ) : the_post();
-    // OUTPUT RAW HTML ONLY
-    echo do_shortcode( get_the_content( null, false, $post ) );
+    // Output content with shortcodes processed
+    the_content();
 endwhile;
 ?>
 

@@ -27,7 +27,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <div id="page" class="base47-site">
 
-    <?php if ( ! is_page_template( 'template-canvas.php' ) ) : ?>
+    <?php 
+    // Hide header in canvas mode OR if page has Base47/Mivon shortcodes
+    $hide_header = is_page_template( 'template-canvas.php' );
+    
+    if ( ! $hide_header && is_singular() ) {
+        global $post;
+        if ( $post ) {
+            $content = $post->post_content;
+            $has_base47_shortcode = (
+                strpos( $content, '[mivon-' ) !== false ||
+                strpos( $content, '[base47-' ) !== false
+            );
+            if ( $has_base47_shortcode ) {
+                $hide_header = true;
+            }
+        }
+    }
+    
+    if ( ! $hide_header ) : 
+    ?>
 
         <header class="b47-header">
             <div class="b47-container b47-header-inner">

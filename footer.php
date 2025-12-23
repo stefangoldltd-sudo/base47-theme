@@ -6,7 +6,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 
         </main><!-- #base47-main -->
 
-        <?php if ( ! is_page_template( 'template-canvas.php' ) ) : ?>
+        <?php 
+        // Hide footer in canvas mode OR if page has Base47/Mivon shortcodes
+        $hide_footer = is_page_template( 'template-canvas.php' );
+        
+        if ( ! $hide_footer && is_singular() ) {
+            global $post;
+            if ( $post ) {
+                $content = $post->post_content;
+                $has_base47_shortcode = (
+                    strpos( $content, '[mivon-' ) !== false ||
+                    strpos( $content, '[base47-' ) !== false
+                );
+                if ( $has_base47_shortcode ) {
+                    $hide_footer = true;
+                }
+            }
+        }
+        
+        if ( ! $hide_footer ) : 
+        ?>
 
             <footer class="b47-footer">
                 <div class="b47-container b47-footer-inner">
